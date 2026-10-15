@@ -66,14 +66,14 @@ src/main/java/com/shinkwang/backendsystemlab/
 └── observability/README.md # Actuator부터 지표·로그·추적까지
 ```
 
-각 디렉터리는 학습 안내와 향후 해당 실험 코드를 가까이 두기 위한 위치다. 현재는 커리큘럼만 있으며 장애 API는 구현하지 않았다. Markdown은 Java 컴파일 대상이 아니다. 실험 기록은 코드 디렉터리 대신 `docs/experiments/`에 모은다.
+각 디렉터리는 학습 안내와 해당 실험 코드를 가까이 두기 위한 위치다. CPU 주제에는 `lab` 프로필 전용 계산 API를 작성했고, 다른 주제는 커리큘럼 단계다. Markdown은 Java 컴파일 대상이 아니다. 실험 기록은 코드 디렉터리 대신 `docs/experiments/`에 모은다.
 
 ## 현재 프로젝트와 실행 환경
 
 - 빌드 설정: Java 21 toolchain, Spring Boot 4.1.1, Gradle Wrapper.
 - 선언된 의존성: Web MVC, Actuator, 관련 테스트 스타터.
-- 현재 코드: Spring Boot 진입점과 기본 테스트. 별도의 Lab API·DB·Redis·Kafka 설정은 없다.
-- 코드 작성은 로컬에서, Linux 관찰 실험은 격리된 Ubuntu VM을 기본 계획으로 한다. VM 구성과 실제 실행 여부는 아직 미확인이다.
+- 현재 코드: Spring Boot 진입점, 기본 테스트, `lab` 프로필 전용 `GET /lab/cpu`. 계산은 약 3초로 고정하고, 같은 JVM의 동시 계산을 1개로 제한하며 추가 요청은 HTTP 429로 거절하도록 작성했다. DB·Redis·Kafka는 아직 없다.
+- 코드 작성은 Mac에서, 관찰 실험은 별도 학습용 Linux VM에서 진행한다. 기본 앱 기동과 CPU-01·02 관찰을 마쳤다. CPU 실험 코드는 Mac의 `compileJava` 성공을 확인했고, Linux 전달·프로필·동시 요청 제한의 실행 검증은 다음 단계다.
 - macOS의 명령과 Linux 명령은 출력·옵션이 다를 수 있다. `free`, `ss` 등의 Linux 실습을 macOS에서 그대로 진행하지 않는다.
 
 첫 실행은 [환경 확인 안내](docs/START-HERE.md)를 따른다. 빌드 설정이 있다는 사실은 해당 컴퓨터에서 빌드나 실행이 검증됐다는 뜻이 아니다.
