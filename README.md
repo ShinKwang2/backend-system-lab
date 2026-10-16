@@ -73,7 +73,7 @@ src/main/java/com/shinkwang/backendsystemlab/
 - 빌드 설정: Java 21 toolchain, Spring Boot 4.1.1, Gradle Wrapper.
 - 선언된 의존성: Web MVC, Actuator, 관련 테스트 스타터.
 - 현재 코드: Spring Boot 진입점, 기본 테스트, `lab` 프로필 전용 `GET /lab/cpu`. 계산은 약 3초로 고정하고, 같은 JVM의 동시 계산을 1개로 제한하며 추가 요청은 HTTP 429로 거절하도록 작성했다. DB·Redis·Kafka는 아직 없다.
-- 코드 작성은 Mac에서, 관찰 실험은 별도 학습용 Linux VM에서 진행한다. 기본 앱 기동과 CPU-01·02 관찰을 마쳤다. CPU 실험 코드는 Mac의 `compileJava` 성공을 확인했고, Linux 전달·프로필·동시 요청 제한의 실행 검증은 다음 단계다.
+- 코드 작성은 Mac에서, 관찰 실험은 별도 학습용 Linux VM에서 진행한다. CPU-01~03에서 프로세스 식별, 정상 CPU, 프로필별 API 등록, 제한된 계산 부하와 회복, 추가 요청 429, 요청 시간 3.002366초를 관찰했다. 명령과 실행 순서는 [실험 기록](docs/experiments/README.md)에 남긴다.
 - macOS의 명령과 Linux 명령은 출력·옵션이 다를 수 있다. `free`, `ss` 등의 Linux 실습을 macOS에서 그대로 진행하지 않는다.
 
 첫 실행은 [환경 확인 안내](docs/START-HERE.md)를 따른다. 빌드 설정이 있다는 사실은 해당 컴퓨터에서 빌드나 실행이 검증됐다는 뜻이 아니다.

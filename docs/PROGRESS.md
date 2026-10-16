@@ -4,15 +4,15 @@
 
 ## 지금 위치
 
-- 과정: F00 — 환경 확인 전.
-- 현재 주제: [첫 시작 안내](START-HERE.md), 이어서 [CPU](../src/main/java/com/shinkwang/backendsystemlab/cpu/README.md).
-- 현재 세부 단계: 실험할 Linux 환경과 실제 Java 실행 환경 확인.
+- 과정: F00·F01 CPU 입문 완료. CPU-03의 실행 종료·기록 동기화 확인 후 F02 Memory 입문으로 진행한다.
+- 현재 주제: [CPU-03 마무리](../src/main/java/com/shinkwang/backendsystemlab/cpu/README.md). CPU-04 추적은 Thread 입문 뒤 H01에서 진행한다.
+- 현재 세부 단계: HTTP 200, total 3.002366s 출력 확인. CPU-01~03을 터미널별 재현 순서·명령·키 조작·실제 결과·설명·미확인 항목으로 정리함. 관찰과 학습자 설명은 완료, lab 앱 종료·문서 커밋/푸시는 미확인.
 - 도움 수준: 안내형. 개념·명령·볼 항목을 먼저 설명한다.
-- 확인된 작업: 2026-10-15 학습 원칙과 커리큘럼 문서 작성. 실험 코드는 추가하지 않음.
-- 학습자가 실제 수행한 실습: 이 저장소에 확인 가능한 기록 없음. 과거 대화에서 언급된 실습은 완료로 추정하지 않음.
-- 아직 확인하지 못한 점: VM 준비, JDK/도구 버전, 앱 기동, 학습자가 이미 익힌 명령어.
-- 최근 실제 실험 기록: 없음.
-- 다음 작은 행동: 터미널의 실행 위치와 OS를 확인하고 `docs/ENVIRONMENT.md`의 환경 E01부터 채운다.
+- 확인된 작업: CPU-01·02 관찰, CPU-03 구현·컴파일·프로필 404/200·앱 CPU 약 100·회복·추가 요청 429·전체 us 약 25/id 약 75·실측 요청 3.002366초를 기록. 학습자가 CPU 비율·사용자/커널 모드 관계를 설명했고 필요한 범위를 보완함.
+- 학습자가 실제 수행한 실습: 2026-10-15 `uname -s` → `Linux`, `pwd` → `/home/skl`, `ls` → 출력 없음, `ls -a` → `.`, `..`, `.bash_history`, `.bash_logout`, `.bashrc`, `.cache`, `.config`, `.lesshst`, `.profile`, `.ssh`, `.viminfo` (사용자 보고). `skl` 사용자로 생성했다고 설명함. 숨김 항목의 내용은 확인하지 않음. 과거 대화에서 언급된 다른 실습은 완료로 추정하지 않음.
+- 아직 확인하지 못한 점: lab 앱·top의 마지막 종료, 학습 문서의 커밋·푸시, 부하 중 sy 수치, 장기 정상 범위, VM 자원 할당 설정. Linux 실제 커밋·배포판 버전·개별 도구 버전 등은 필요할 때 보완한다. 로컬 코드 커밋은 fe35463으로 확인했으나 이번 실험 기록은 아직 Git에 반영되지 않음.
+- 최근 실험 기록: [CPU-03 — 관찰 완료 / 정리 확인 대기](experiments/2026-10-15-CPU-03-compute.md), [CPU-02 — 완료](experiments/2026-10-15-CPU-02-baseline.md), [CPU-01 — 완료](experiments/2026-10-15-CPU-01-process.md).
+- 다음 작은 행동: Linux B의 top은 q, Linux A의 lab 앱은 Ctrl+C로 중단했는지 확인한다. Mac에서 정리한 기록을 검토하고 커밋·푸시해 다른 컴퓨터에서도 이어갈 수 있게 한다. 그 뒤 F02 Memory 입문을 시작한다. 추가 CPU 부하 재실험은 필요한 상태가 아니다.
 
 ## 과정별 상태
 
@@ -20,8 +20,8 @@
 
 | 과정 | 주제 | 상태 | 실제 기록 |
 | --- | --- | --- | --- |
-| F00 | 환경·터미널·기동 확인 | 계획 | 없음 |
-| F01 | CPU 입문 | 계획 | 없음 |
+| F00 | 환경·터미널·기동 확인 | 완료 | Linux·프로젝트·Java 21·Gradle 9.7.1·앱 기동 확인 ([환경 E01](ENVIRONMENT.md), [기동 기록](experiments/2026-10-15-CPU-01-process.md)) |
+| F01 | CPU 입문 | 완료 | [CPU-01](experiments/2026-10-15-CPU-01-process.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-03](experiments/2026-10-15-CPU-03-compute.md). 실행 종료·기록 동기화는 별도 확인 대기 |
 | F02 | Memory 입문 | 계획 | 없음 |
 | F03 | Thread 입문 | 계획 | 없음 |
 | F04 | Load / Scheduler 입문 | 계획 | 없음 |
