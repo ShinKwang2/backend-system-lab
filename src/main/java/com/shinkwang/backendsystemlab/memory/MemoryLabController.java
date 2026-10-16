@@ -41,4 +41,11 @@ public class MemoryLabController {
         return "Cleared retained arrays: " + removed;
     }
 
+    @PostMapping("/lab/memory/transient")
+    public synchronized String transientArray() {
+        byte[] temporary = new byte[ARRAY_SIZE_BYTES];
+
+        return "Temporary array bytes: " + temporary.length;
+    }
+
 }

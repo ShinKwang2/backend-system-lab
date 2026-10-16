@@ -6,8 +6,8 @@
 
 - 날짜 / 환경 ID: 2026-10-16 KST / E01
 - 오늘 알아볼 질문 하나: 객체를 만든 뒤 어떤 경우에 GC가 회수할 수 있는가?
-- 코드 커밋 / 변경 사항: `MemoryLabController`를 추가해 `lab` 프로필 전용 배열 보관·비우기 API를 작성함. 아직 컴파일·실행하지 않음. 아래 참조 예시는 설명용이며 실행하지 않음.
-- 앱·도구·DB 등 실제 버전: 설명용 단계라 관측 도구 사용 없음.
+- 코드 커밋 / 변경 사항: `MemoryLabController`를 추가해 `lab` 프로필 전용 배열 보관·비우기 API를 작성함. Linux에서 `./gradlew compileJava` 성공을 사용자가 보고함. 아래 참조 예시는 설명용이며 실행하지 않음.
+- 앱·도구·DB 등 실제 버전: Linux의 lab 프로필 앱 PID 55091 실행 중 (사용자 보고). 기준 Heap은 아직 관측 전.
 - vCPU / 메모리 / JVM 옵션 / GC / 스레드 설정: Linux VM E01 기록을 참고. 이번 단계에서 부하 없음.
 - 요청 수 / 동시성 / 실행 시간 / 입력 크기: 해당 없음.
 - 이번에 바꿀 조건 하나: 먼저 두 참조가 한 객체를 가리키는 예시에서 `a` 참조만 제거한다.
@@ -35,25 +35,39 @@ a = null;
 
 ## 4. 실행 순서와 재현 절차
 
-이 단계는 튜터가 설명한 개념 예시로, Linux나 Mac에서 실제 실행한 명령은 없다.
+참조 설명 예시 자체는 실행하지 않았다. 아래 추가 실험은 Linux VM에서 수행한다.
 
 | 순서 | 컴퓨터·터미널 / 작업 폴더 | 정확한 명령·키 조작 | 목적·볼 항목 | 실제 결과·확인 상태 |
 | --- | --- | --- | --- | --- |
 | 1 | 해당 없음 | 설명용 Java 코드의 `a`, `b` 참조를 읽음 | 한 객체에 연결된 참조가 몇 개인지 개념적으로 판단 | 사용자가 `b`에 참조가 남아 접근 가능하므로 GC 대상이 아니라고 설명함 |
+| 2 | Linux VM 관찰 터미널 | `jcmd 55091 GC.heap_info` | 배열 보관 전 Heap 기준값 확인 | 사용자가 출력 제공: Heap total 59392K, used 44663K, region size 1024K. API 호출 전 |
+| 3 | Linux VM 요청 터미널 | `curl -i --max-time 5 -X POST http://localhost:8080/lab/memory/retained` | 1 MiB 배열 하나를 컬렉션에 보관 | 사용자가 `Retained arrays: 1` 응답을 확인했다고 보고함 |
+| 4 | Linux VM 관찰 터미널 | `jcmd 55091 GC.heap_info` | 보관 요청 뒤 전체 Heap 사용량을 다시 읽음 | 사용자가 출력 제공: total 71680K, used 26346K. 기준선보다 used가 18317K 낮았음 |
+| 5 | Linux VM 요청 터미널 | 같은 POST를 세 번 더 각각 호출 | 목록에 배열을 2, 3, 4개 보관 | 사용자가 2, 3, 4 응답 단계별로 확인함 |
+| 6 | Linux VM 관찰 터미널 | 각 보관 단계 뒤 `jcmd 55091 GC.heap_info` | Heap `used`와 G1 region 상태 비교 | 2개: total 71680K, used 28721K, young 9 regions. 3개: used 30846K, young 10. 4개: used 32971K, young 10. 2→3 및 3→4 각각 +2125K; 1→2는 +2375K |
+| 7 | Linux VM 요청 터미널 | 다섯 번째 `curl -i --max-time 5 -X POST http://localhost:8080/lab/memory/retained` | 보관 상한에서 요청이 거절되는지 확인 | 사용자가 HTTP 429 응답을 확인함. 코드의 개수 검사 뒤에 할당이 있어 추가 배열은 만들지 않음 |
+| 8 | Linux VM 요청 터미널 | `curl -i --max-time 5 -X DELETE http://localhost:8080/lab/memory/retained` | 목록의 요소 참조를 제거 | 사용자가 HTTP 200, Content-Length 26을 제공함. 붙여넣은 출력에는 body 문구가 보이지 않음; 네 배열 정리 응답일 것으로 예상되나 실제 body는 미확인 |
+| 9 | Linux VM 관찰 터미널 | `jcmd 55091 GC.heap_info` | DELETE 뒤 Heap 사용량 확인 | 사용자가 출력 제공: total 71680K, used 35708K, young 12 regions. 배열 4개 때 used 32971K보다 2737K 높음 |
 
 ## 5. 정상 상태와 변화 관찰
 
 | 시각·관측 구간 | 조건 | 관측값·단위 | 사용한 도구 |
 | --- | --- | --- | --- |
-| 해당 없음 | 개념 설명 | 실제 JVM Heap 관측 없음 | 없음 |
+| 2026-10-16, 배열 추가 전 | Linux lab 프로필 앱 PID 55091 | Heap total 59392K, used 44663K; Metaspace used 31867K | `jcmd 55091 GC.heap_info` |
+| 2026-10-16, 배열 1개 보관 응답 뒤 | 같은 JVM, `Retained arrays: 1` 응답 보고 | Heap total 71680K, used 26346K; Metaspace used 33829K | `jcmd 55091 GC.heap_info` |
+| 2026-10-16, 보관 배열 2개 | 같은 JVM, 요청 응답 2 | Heap used 28721K; young 9 regions | `jcmd 55091 GC.heap_info` |
+| 2026-10-16, 보관 배열 3개 | 같은 JVM, 요청 응답 3 | Heap used 30846K; young 10 regions | `jcmd 55091 GC.heap_info` |
+| 2026-10-16, 보관 배열 4개 | 같은 JVM, 요청 응답 4 | Heap used 32971K; young 10 regions | `jcmd 55091 GC.heap_info` |
+| 2026-10-16, DELETE 뒤 | 목록 비우기 응답 HTTP 200 뒤 | Heap used 35708K; young 12 regions. 즉시 감소하지 않고 직전보다 2737K 증가 | `jcmd 55091 GC.heap_info` |
 
 ## 6. 관찰 사실과 가설
 
-- 출력에서 직접 확인한 사실: 이 단계는 실제 프로그램 실행이 아님.
-- 그 사실에 대한 해석: `a = null`은 변수 `a`의 연결을 지우지만, 다른 변수 `b`의 연결까지 지우지 않는다.
+- 출력에서 직접 확인한 사실: 보관 전 `used` 44663K, 배열 1개 응답 뒤 26346K, 2개 뒤 28721K, 3개 뒤 30846K, 4개 뒤 32971K였다. 2→3과 3→4는 각각 2125K 증가했고, 1→2는 2375K 증가했다. 배열 payload 한 개는 1024K이며 G1 region도 1024K로 출력됐다.
+- 그 사실에 대한 해석: `used`는 개별 배열 크기가 아니라 Heap 전체의 현재 사용량이다. 첫 보관 뒤 감소한 것은 다른 회수 가능 객체의 정리 등과 양립하며, 보관된 배열이 회수됐다는 뜻은 아니다. 1MiB 배열은 1MiB region의 절반보다 큰 G1 humongous object로 분류되어 여러 연속 region을 차지할 수 있다. 따라서 약 2MiB씩 증가한 관측은 region 할당과 관련 있을 가능성이 있지만, `GC.heap_info` 스냅샷만으로 정확한 원인을 확정하지 않는다. [Java 21 G1 가이드](https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html)는 humongous 객체 기준을 region 절반 이상으로 설명한다.
+- DELETE 뒤 관찰 사실과 해석: 목록 비우기 응답은 HTTP 200이었고, 다음 `used`는 35708K로 직전 4개 보관 시점 32971K보다 2737K 높았다. `clear()`가 목록 요소 참조를 제거해 배열을 회수 가능하게 하더라도 즉시 GC를 실행하거나 Heap `used`를 즉시 낮추지는 않는다. 다른 객체 할당과 GC 시점도 섞이므로 이 값만으로 배열이 아직 참조 중이라고 결론 내릴 수 없다.
 - 가설 A / 근거 / 반증되려면 나와야 할 결과: 객체는 `b`를 통해 접근 가능하다.
 - 다른 가능한 설명 B: 해당 없음.
-- 아직 판단할 수 없는 것: 컬렉션 등 다른 참조 경로가 객체를 붙들고 있는 경우.
+- 아직 판단할 수 없는 것: 약 2125K 증가분 중 humongous region 여유분과 요청 중 다른 할당이 각각 차지한 정확한 크기, 컬렉션을 비운 뒤 GC가 언제 실행되는지.
 
 ## 7. 검증
 
@@ -78,5 +92,5 @@ a = null;
 - 내 말로 설명하는 핵심: `b = a` 뒤에는 두 변수가 같은 객체를 가리키므로 `a = null` 이후에도 `b`로 객체에 접근할 수 있다. `b = null` 뒤 다른 참조가 없다면 GC 대상이 되며 실제 메모리 회수는 JVM이 수행한다. 지역 컬렉션과 그 요소도 메서드가 끝난 뒤 다른 참조가 없다면 회수 가능하고, 살아 있는 객체의 필드 컬렉션은 요소를 계속 보관할 수 있다. 참조를 끊어도 Heap `used`가 즉시 내려간다고 보장되지는 않는다.
 - 처음 예상과 달랐던 점: 해당 없음.
 - 아직 모르는 점: 제한된 실험에서 transient allocation과 컬렉션 보관이 `GC.heap_info`에 어떤 모양으로 보일지, 참조 제거 뒤 GC가 실제 언제 실행될지.
-- 코드 상태: 학습자가 `@Profile("lab")` 컨트롤러에 배열 1 MiB, 최대 4개 상한, `POST /lab/memory/retained` 보관과 `DELETE /lab/memory/retained` 비우기 메서드를 작성했다. 두 메서드는 같은 컨트롤러 객체의 `synchronized` 메서드다. 미사용 `GetMapping` import는 정리했다. 컴파일·API 호출·실제 메모리 관측은 아직 하지 않았다.
-- 다음 작은 실험: 코드를 컴파일한 뒤, 동일한 실험 프로필에서 보관 상한과 비우기를 제한된 횟수로 확인한다. 그 다음 transient allocation을 추가해 같은 크기의 배열을 잠시 만들고 버리는 경우와 컬렉션에 보관하는 경우를 비교한다. 실험은 `lab` 프로필에만 두며 OOM이나 무제한 할당을 유도하지 않는다.
+- 코드 상태: 학습자가 `@Profile("lab")` 컨트롤러에 배열 1 MiB, 최대 4개 상한, `POST /lab/memory/retained` 보관, `DELETE /lab/memory/retained` 비우기, `POST /lab/memory/transient` 지역 할당 메서드를 작성했다. 보관·비우기 API 버전은 Linux에서 컴파일했고 1~4개 보관, 5번째 요청 429, DELETE 200을 관찰했다. DELETE 뒤 Heap `used`는 즉시 줄지 않았다. transient 추가분은 아직 컴파일·실행 전.
+- 다음 작은 실험: 새 transient endpoint와 실제 관측을 commit/push하고 Linux VM에서 pull한다. 이전 앱을 종료한 뒤 새 버전을 컴파일·lab 프로필로 실행하고 transient endpoint를 한 번 호출해 기존 retained endpoint와 비교한다. 실험은 `lab` 프로필에만 두며 OOM이나 무제한 할당을 유도하지 않는다.

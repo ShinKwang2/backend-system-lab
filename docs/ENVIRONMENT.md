@@ -36,10 +36,11 @@
 | `ps`, `top`, `free`, `vmstat`, `ss` | ps·top·free -h 실행 확인. CPU-02에서 procps-ng 4.0.4, Delay 3.0 secs, Cumulative Off, Irix On 전환 확인. CPU-03은 -d 1·Irix On 기준으로 안내 후 관측 보고. Memory-01에서 `top -p 54006`으로 VIRT 5382468 KiB, RES 159168 KiB, SHR 25692 KiB, %MEM 2.1 확인 (사용자 보고). vmstat·ss는 미확인 |
 | `jps`, `jcmd`, `jstack` | `jps`와 `jps -l` 실행 성공. `command -v jps` → `/usr/bin/jps` (사용자 보고). `jcmd 54006 GC.heap_info` 실행 성공. `jcmd` 경로·패키지 이력·jstack 실행은 미확인 |
 | `iostat` | 필요 시 sysstat 도구 확인; 아직 미확인 |
-| 빌드 / 기동 성공 여부 | 2026-10-15T00:23:28.176Z 로그에 `Started BackendSystemLabApplication in 0.842 seconds` 확인 (사용자 제공). 해당 실행의 앱 PID는 46883; 재시작하면 다시 확인해야 함. 별도 `build`·테스트 작업은 미수행 |
+| 빌드 / 기동 성공 여부 | 2026-10-15T00:23:28.176Z 로그에 `Started BackendSystemLabApplication in 0.842 seconds` 확인 (사용자 제공). 2026-10-16 Linux에서 retention/clear 버전 `./gradlew compileJava` 성공 (사용자 제공, 629ms). transient endpoint 추가분은 아직 컴파일 전. 테스트 실행은 미수행 |
 | 최근 앱 재실행 관찰 | 중단 후 앱·Wrapper가 jps 목록에서 사라짐. 재실행 후 앱 47487, Wrapper 47427, Gradle 데몬 46752 확인 (사용자 제공 jps 출력). PID는 해당 실행에만 사용 |
 | CPU-03 기본 프로필 관찰 | 앱 PID 51980. UTC 2026-10-15T22:57:11.216Z 로그의 default 확인. Tomcat 기동·/lab/cpu HTTP 404를 사용자 보고. 이후 lab으로 재시작함 |
 | CPU-03 lab 프로필 관찰 | 앱 PID 52288. 요청 전 앱 CPU 주로 0.0·가끔 0.6, 계산 중 약 100·이후 회복, 전체 us 약 25·id 약 75를 사용자 보고. 실제 HTTP 200·추가 요청 429·time_total 3.002366s 확인. sy 구체적 값과 종료 여부는 미확인 |
+| MEMORY-03 현재 실행 | 2026-10-16 Linux lab 프로필 앱 PID 55091. 보관 배열 1→2→3→4개에서 Heap `used` 26346K→28721K→30846K→32971K. 5번째 POST는 429, DELETE는 200. DELETE 뒤 Heap `used` 35708K (사용자 출력). G1 region 1024K |
 | PID 1 / 재부모화 관찰 | `ps -p 1 -o pid,ppid,comm` → PID 1, PPID 0, systemd. Wrapper 종료 후 데몬 46752의 PPID가 1로 바뀜 (사용자 보고) |
 | 실험 프로필 / 자원 상한 / 정리 방법 | lab 전용, 약 3초 경과 시간 제한, 같은 JVM에서 동시 계산 1개·초과 429, finally 복원. 컴파일·프로필 차이·계산·거절·회복을 실제 확인. top q·실행 터미널 Ctrl+C로 정리하도록 안내하며 최종 수행은 미확인 |
 
