@@ -29,12 +29,12 @@
 | 로컬 원격 저장소 | `origin`: `https://github.com/ShinKwang2/backend-system-lab.git`; Public. 로컬 코드 커밋 fe35463 확인. 사용자 push·Linux pull 성공 보고. Linux 해시 출력과 추가 실험 기록의 커밋·푸시는 미확인 |
 | JDK 배포판 / 실제 버전 | `java -version`: OpenJDK `21.0.12.1`, Runtime build `21.0.12.1+1-1-26.04.4-Ubuntu`, 64-Bit Server VM (사용자 보고). 컴파일러·진단 도구 존재는 아직 미확인. 빌드 문자열만으로 Linux 배포판 버전을 확정하지 않음 |
 | Gradle / 실행 JVM | Linux `./gradlew --version` 성공: Gradle 9.7.1, Launcher JVM `21.0.12.1`, Daemon JVM 경로 `/usr/lib/jvm/java-21-openjdk-amd64` (사용자 보고). Linux 기본 앱 기동 확인. CPU 컨트롤러의 Mac compileJava 성공도 사용자 출력으로 확인 |
-| vCPU / 메모리 / 실험 디스크 여유 | Linux에서 `nproc` → `4` (사용자 보고). 현재 실행 환경의 사용 가능한 처리 장치 수이며 물리 코어 수·VM 할당 설정·메모리·디스크 여유는 미확인 |
+| vCPU / 메모리 / 실험 디스크 여유 | nproc 4. free -h의 RAM total 7.2Gi, available 6.2Gi, Swap total 4.0Gi·used 0B (사용자 제공 출력). 물리 코어 수·VM 자원 할당 설정·디스크 여유는 미확인 |
 | JVM 옵션 / GC 종류 | 미확인 |
 | 플랫폼 / 가상 스레드 설정 | 미확인; 첫 스레드 추적 실험은 플랫폼 스레드 기준 |
 | 앱 기동 명령 / 포트 | 기본: `./gradlew bootRun`. 실험: `./gradlew bootRun --args='--spring.profiles.active=lab'`. HTTP 8080, context path `/` 확인. 마지막 관측은 lab 실행이며 최종 종료는 미확인 |
-| `ps`, `top`, `free`, `vmstat`, `ss` | ps·top 실행 확인. CPU-02에서 procps-ng 4.0.4, Delay 3.0 secs, Cumulative Off, Irix On 전환 확인. CPU-03은 -d 1·Irix On 기준으로 안내 후 관측 보고. free·vmstat·ss는 미확인 |
-| `jps`, `jcmd`, `jstack` | `jps`와 `jps -l` 실행 성공. `command -v jps` → `/usr/bin/jps` (사용자 보고). 링크 대상·설치 이력, jcmd·jstack 실행은 미확인 |
+| `ps`, `top`, `free`, `vmstat`, `ss` | ps·top·free -h 실행 확인. CPU-02에서 procps-ng 4.0.4, Delay 3.0 secs, Cumulative Off, Irix On 전환 확인. CPU-03은 -d 1·Irix On 기준으로 안내 후 관측 보고. Memory-01에서 `top -p 54006`으로 VIRT 5382468 KiB, RES 159168 KiB, SHR 25692 KiB, %MEM 2.1 확인 (사용자 보고). vmstat·ss는 미확인 |
+| `jps`, `jcmd`, `jstack` | `jps`와 `jps -l` 실행 성공. `command -v jps` → `/usr/bin/jps` (사용자 보고). `jcmd 54006 GC.heap_info` 실행 성공. `jcmd` 경로·패키지 이력·jstack 실행은 미확인 |
 | `iostat` | 필요 시 sysstat 도구 확인; 아직 미확인 |
 | 빌드 / 기동 성공 여부 | 2026-10-15T00:23:28.176Z 로그에 `Started BackendSystemLabApplication in 0.842 seconds` 확인 (사용자 제공). 해당 실행의 앱 PID는 46883; 재시작하면 다시 확인해야 함. 별도 `build`·테스트 작업은 미수행 |
 | 최근 앱 재실행 관찰 | 중단 후 앱·Wrapper가 jps 목록에서 사라짐. 재실행 후 앱 47487, Wrapper 47427, Gradle 데몬 46752 확인 (사용자 제공 jps 출력). PID는 해당 실행에만 사용 |
