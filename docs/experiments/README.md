@@ -16,7 +16,7 @@
 | [MEMORY-01·02](2026-10-16-MEMORY-01-os-memory.md) | 완료 | 전체 RAM, top RSS/virtual, JVM Heap·Metaspace 범위 |
 | [MEMORY-03](2026-10-16-MEMORY-03-references.md) | 안내 실험 완료 | Java 객체 참조, 컬렉션 보관·해제, 일시 할당과 GC 요청 전후 관찰 |
 | [THREAD-01](2026-10-19-THREAD-01-process-threads.md) | 완료 | PID/TID, Linux와 JVM 스레드 목록 대조, Acceptor/Poller/worker, 마무리 퀴즈 |
-| [THREAD-02](2026-10-19-THREAD-02-timed-wait.md) | 진행 중 / 시작 복습 답변 확인 | MEMORY-02·THREAD-01 복습, 계산과 sleep의 비교 준비. 실험 미실행 |
+| [THREAD-02](2026-10-19-THREAD-02-timed-wait.md) | 완료 / 기록 동기화 대기 | sleep HTTP 200·3.003086초, 낮은 CPU, 같은 worker의 TIMED_WAITING → WAITING 비교, 퀴즈 3문항·종료 확인 완료 |
 
 ## 기록 기준
 
