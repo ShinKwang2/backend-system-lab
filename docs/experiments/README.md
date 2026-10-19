@@ -14,10 +14,12 @@
 | [CPU-02](2026-10-15-CPU-02-baseline.md) | 완료 | 정상 CPU, Irix 모드, HTTP 요청, 전체 요약·갱신 간격 |
 | [CPU-03](2026-10-15-CPU-03-compute.md) | 관찰 완료 / 정리 확인 대기 | 계산 부하, 프로필 404/200, 추가 요청 429, 전체 CPU, 3.002366초 |
 | [MEMORY-01·02](2026-10-16-MEMORY-01-os-memory.md) | 완료 | 전체 RAM, top RSS/virtual, JVM Heap·Metaspace 범위 |
-| [MEMORY-03](2026-10-16-MEMORY-03-references.md) | 진행 중 / 제한 실험 컨트롤러 작성, 컴파일 전 | Java 객체 참조, 컬렉션 보관, 회수 가능성 기초 |
+| [MEMORY-03](2026-10-16-MEMORY-03-references.md) | 안내 실험 완료 | Java 객체 참조, 컬렉션 보관·해제, 일시 할당과 GC 요청 전후 관찰 |
+| [THREAD-01](2026-10-19-THREAD-01-process-threads.md) | 완료 | PID/TID, Linux와 JVM 스레드 목록 대조, Acceptor/Poller/worker, 마무리 퀴즈 |
+| [THREAD-02](2026-10-19-THREAD-02-timed-wait.md) | 진행 중 / 시작 복습 답변 확인 | MEMORY-02·THREAD-01 복습, 계산과 sleep의 비교 준비. 실험 미실행 |
 
 ## 기록 기준
 
 각 문서는 터미널 역할·작업 폴더·명령과 키 조작의 순서·옵션 의미·실제 결과·학습자의 설명을 담는다. 재현용 안내, 실제 출력, 사용자 보고, 미확인을 구분한다. 파일명의 날짜는 시작일이며 여러 날 진행하면 문서 안에 실제 관찰일과 UTC/KST 기준을 적는다.
 
-파일을 저장한 것과 GitHub에 반영한 것은 다르다. CPU 기록의 로컬 커밋 fee11dd는 확인됐으며, 당시 원격 추적 브랜치보다 1커밋 앞섰다. 이후 Memory 기록·진도 변경은 별도 미커밋 변경이다. 푸시·동기화가 확인되면 진도 문서의 상태를 갱신한다.
+파일을 저장한 것과 GitHub에 반영한 것은 다르다. 최신 커밋·푸시·Linux 동기화 여부는 [진도 문서](../PROGRESS.md)의 Git 상태에서 확인한다.

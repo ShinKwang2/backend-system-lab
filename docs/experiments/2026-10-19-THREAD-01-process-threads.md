@@ -157,7 +157,7 @@ HotSpot의 Java `Thread` 목록 밖에서 덤프 마지막에 따로 출력된 n
 
 - 출력에서 직접 확인한 사실: Linux `ps`가 PID 66439를 가진 여러 행을 표시한다. 각 행의 TID는 다르고, leader row는 PID와 TID 모두 66439다. STAT은 `Sl`이다. `COMMAND` 이름은 `http-nio-8080-e`처럼 짧게 보인다. JVM dump에서 `http-nio-8080-exec-1`의 `[66469]`와 `nid=66469`가 앞서 본 TID 66469와 일치했다.
 - 그 사실에 대한 해석: `http-nio-8080-e`는 실제로 `http-nio-8080-exec-1` 접두부였다. 이 executor worker는 `WAITING (parking)` 상태이고 `LinkedBlockingQueue.take` 및 `ThreadPoolExecutor.getTask`에서 작업을 기다리는 것으로 보인다. Poller는 `EPoll.wait`에서 소켓 이벤트를 기다리고, Acceptor는 `Net.accept`에서 새 연결을 기다린다. 사용자는 Acceptor가 새 TCP 연결을 받고, Poller가 연결된 소켓의 이벤트를 기다리며, executor worker가 큐의 처리 작업을 받아 요청을 처리한다고 설명했다. 이어 JVM의 Thread 상태와 Linux의 OS thread 상태는 엄밀히 다른 관점이며, 이 스냅샷에서 Poller/Acceptor는 Java `RUNNABLE`이면서 Linux `Sl`로 보일 수 있다고 설명했다. 보충: Java `RUNNABLE`은 JVM이 “연결을 기다린다”고 표현한 상태라기보다, Java 수준에서 `WAITING`/`BLOCKED` 등으로 표시되지 않은 상태다. `RUNNABLE`만으로 실제 CPU 사용을 단정할 수 없다. [Java 21 Thread.State 문서](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.State.html).
-- 아직 판단할 수 없는 것: 마무리 퀴즈를 통한 용어·출력 해석의 재확인, Linux TID 66439가 이 JVM dump에서 직접 대응되지 않은 이유.
+- 아직 판단할 수 없는 것: Linux TID 66439가 이 JVM dump에서 직접 대응되지 않은 이유. 용어·출력 해석은 아래 마무리 퀴즈에서 확인·보충함.
 
 ## 7. 검증
 
