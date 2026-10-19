@@ -4,15 +4,16 @@
 
 ## 지금 위치
 
-- 과정: F00·F01·F02 입문 완료 / F03 Thread 시작 대기. MEMORY-03 실험은 심화 H02 내용이지만 개념·제한 실험을 먼저 진행했다. 전체 순서는 [커리큘럼](CURRICULUM.md)을 따른다.
-- 현재 주제: 다음 입문 주제는 [Thread 커리큘럼](../src/main/java/com/shinkwang/backendsystemlab/thread/README.md). THREAD-01에서 Linux process와 thread의 관계를 익힌 뒤 JVM thread 관측으로 진행한다. CPU-04 추적은 Thread 입문 뒤 H01에서 다룬다.
+- 과정: F00·F01·F02 입문 완료 / F03 Thread 입문 시작. MEMORY-03 실험은 심화 H02 내용이지만 개념·제한 실험을 먼저 진행했다. 전체 순서는 [커리큘럼](CURRICULUM.md)을 따른다.
+- 현재 주제: [Thread 커리큘럼](../src/main/java/com/shinkwang/backendsystemlab/thread/README.md). THREAD-01에서 Linux process와 thread의 관계를 익힌 뒤 JVM thread 관측으로 진행한다. CPU-04 추적은 Thread 입문 뒤 H01에서 다룬다.
 - 최근 완료한 세부 실험: MEMORY-03 객체 참조 기초와 제한 실험. Linux lab 프로필 PID 55091에서 보관 배열 1→2→3→4개일 때 Heap `used`는 26346K→28721K→30846K→32971K. 5번째 POST는 HTTP 429, DELETE는 HTTP 200이었고 이후 `used`는 35708K였다. transient API가 포함된 lab 앱 PID 56469는 호출 전 `used` 24476K, transient 호출 뒤 31459K, `jcmd 56469 GC.run` 요청 뒤 17573K를 보였다. 학습자는 회수 대상과 실제 GC 실행을 구분하고 특정 배열의 회수 여부는 전체 Heap 수치만으로 확정할 수 없다고 설명했다. 2026-10-19 transient endpoint 응답 HTTP 200, `Temporary array bytes: 1048576`을 확인함. 자세한 절차와 관측값은 [MEMORY-03 기록](experiments/2026-10-16-MEMORY-03-references.md)에 있음.
 - 도움 수준: 안내형. 개념·명령·볼 항목을 먼저 설명한다.
 - 확인된 작업: CPU-01·02 관찰, CPU-03 구현·컴파일·프로필 404/200·앱 CPU 약 100·회복·추가 요청 429·전체 us 약 25/id 약 75·실측 요청 3.002366초를 기록. 학습자가 CPU 비율·사용자/커널 모드 관계를 설명했고 필요한 범위를 보완함.
 - 학습자가 실제 수행한 실습: 2026-10-15 `uname -s` → `Linux`, `pwd` → `/home/skl`, `ls` → 출력 없음, `ls -a` → `.`, `..`, `.bash_history`, `.bash_logout`, `.bashrc`, `.cache`, `.config`, `.lesshst`, `.profile`, `.ssh`, `.viminfo` (사용자 보고). `skl` 사용자로 생성했다고 설명함. 숨김 항목의 내용은 확인하지 않음. 과거 대화에서 언급된 다른 실습은 완료로 추정하지 않음.
-- 아직 확인하지 못한 점: 이번 GC 전후 감소량 중 transient 배열이 차지한 정확한 크기, Heap·Metaspace 내부 동작과 G1 세부 구조, CPU lab 앱·top의 마지막 종료, CPU 부하 중 sy 수치와 장기 정상 범위. CPU 기록의 로컬 커밋 fee11dd를 확인했으며 당시 원격 추적 브랜치보다 1커밋 앞섰다. Memory 실험을 기록한 커밋 `6b175a6`은 로컬 `main`에 있고 `origin/main`보다 1커밋 앞섰음; 푸시와 Linux pull은 아직 미확인.
+- 확인된 THREAD-01 이해: 학습자는 Acceptor가 새 연결을 받고, Poller가 연결 소켓 이벤트를 감지해 작업을 전달하며, `exec-*`가 큐에서 작업을 받아 처리한다고 설명했다. Java `RUNNABLE`과 Linux `Sl`이 다른 관점인 것도 설명했다. 마무리 퀴즈에서 PID/TID, `Sl`, 각 스레드 역할, JVM과 Linux 상태의 차이, `jcmd`와 TID/nid 대조를 다시 확인했다. `l`은 Linux의 multithreaded 표시이며 `-ww`도 `comm`의 고정 이름 길이 제한을 해제하지 않는다고 보충했다. THREAD-01 완료.
+- 아직 확인하지 못한 점: 이번 GC 전후 감소량 중 transient 배열이 차지한 정확한 크기, Heap·Metaspace 내부 동작과 G1 세부 구조, CPU lab 앱·top의 마지막 종료, CPU 부하 중 sy 수치와 장기 정상 범위, Linux TID 66439와 JVM dump의 직접 대응 대상. CPU 기록의 로컬 커밋 fee11dd를 확인했으며 당시 원격 추적 브랜치보다 1커밋 앞섰다. Memory 기록 커밋 `6b175a6`과 진도 순서 정정 커밋 `c8a7106`이 `origin/main`까지 반영된 것을 Mac에서 확인했고, Linux pull은 사용자 보고로 확인함.
 - 최근 실험 기록: [MEMORY-03 — 안내 실험 완료](experiments/2026-10-16-MEMORY-03-references.md), [MEMORY-01·02 — 범위 읽기 완료](experiments/2026-10-16-MEMORY-01-os-memory.md), [CPU-03 — 관찰 완료](experiments/2026-10-15-CPU-03-compute.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-01](experiments/2026-10-15-CPU-01-process.md).
-- 다음 작은 행동: Mac에서 커밋 `6b175a6`을 `git push`하고 Linux VM에서 `git pull`한다. 동기화 뒤 F03 THREAD-01을 시작한다. 이번 진도 순서 정정은 아직 커밋 전이다.
+- 다음 작은 행동: 현재 변경된 기록을 Mac에서 커밋·푸시하고 Linux VM에서 pull한다. THREAD-02를 시작할 때는 직전 두 세부 챕터의 복습 퀴즈를 먼저 푼 뒤 Java 스레드 상태를 배운다. [THREAD-01 기록](experiments/2026-10-19-THREAD-01-process-threads.md)은 퀴즈 답까지 반영했으며 아직 커밋 전이다.
 
 ## 과정별 상태
 
@@ -23,7 +24,7 @@
 | F00 | 환경·터미널·기동 확인 | 완료 | Linux·프로젝트·Java 21·Gradle 9.7.1·앱 기동 확인 ([환경 E01](ENVIRONMENT.md), [기동 기록](experiments/2026-10-15-CPU-01-process.md)) |
 | F01 | CPU 입문 | 완료 | [CPU-01](experiments/2026-10-15-CPU-01-process.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-03](experiments/2026-10-15-CPU-03-compute.md). 실행 종료·기록 동기화는 별도 확인 대기 |
 | F02 | Memory 입문 | 완료 | [MEMORY-01·02](experiments/2026-10-16-MEMORY-01-os-memory.md). 심화 H02의 [MEMORY-03](experiments/2026-10-16-MEMORY-03-references.md)은 앞서 제한 실험함 |
-| F03 | Thread 입문 | 계획 | 동기화 후 THREAD-01 시작 예정 |
+| F03 | Thread 입문 | 진행 중 | [THREAD-01](experiments/2026-10-19-THREAD-01-process-threads.md): Linux 스레드 목록·JVM dump 관찰, 역할 설명, 마무리 퀴즈 완료. THREAD-02 계획 |
 | F04 | Load / Scheduler 입문 | 계획 | 없음 |
 | F05 | Disk I/O 입문 | 계획 | 없음 |
 | F06 | Network 입문 | 계획 | 없음 |
