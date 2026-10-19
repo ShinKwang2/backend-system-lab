@@ -6,13 +6,13 @@
 
 - 과정: F00·F01 완료 / F02 Memory 입문 진행 중. CPU 실험 종료와 기록 원격 동기화 상태는 별도 확인 항목으로 유지한다.
 - 현재 주제: [Memory 커리큘럼](../src/main/java/com/shinkwang/backendsystemlab/memory/README.md). MEMORY-01 전체 메모리와 MEMORY-02 OS·프로세스·Heap 범위 구분 완료. CPU-04 추적은 Thread 입문 뒤 H01에서 진행한다.
-- 현재 세부 단계: MEMORY-03 객체 참조 기초 완료, 제한 실험 컨트롤러 검증 중. 사용자는 객체 참조와 컬렉션 보관, 회수 가능성과 실제 회수의 차이를 설명함. Linux에서 retention/clear API 버전 `compileJava` 성공. lab 프로필 PID 55091에서 보관 배열 수가 1→2→3→4일 때 Heap `used`는 26346K→28721K→30846K→32971K로 관측됨. 다섯 번째 요청은 HTTP 429, DELETE는 HTTP 200이었고 이후 `used`는 35708K로 낮아지지 않음. G1 region 할당 가설은 기록했으나 원인은 미확정. 지역 변수로 배열을 만드는 transient API를 추가했으며 아직 새 코드의 컴파일·실행은 안 됨.
+- 현재 세부 단계: MEMORY-03 객체 참조 기초와 제한 실험 완료. Linux lab 프로필 PID 55091에서 보관 배열 1→2→3→4개일 때 Heap `used`는 26346K→28721K→30846K→32971K. 5번째 POST는 HTTP 429, DELETE는 HTTP 200이었고 이후 `used`는 35708K였다. transient API가 포함된 lab 앱 PID 56469는 호출 전 `used` 24476K, transient 호출 뒤 31459K, `jcmd 56469 GC.run` 요청 뒤 17573K를 보였다. 학습자는 회수 대상과 실제 GC 실행을 구분하고 특정 배열의 회수 여부는 전체 Heap 수치만으로 확정할 수 없다고 설명했다. 2026-10-19 transient endpoint 응답 HTTP 200, `Temporary array bytes: 1048576`을 확인함. 자세한 절차와 관측값은 [MEMORY-03 기록](experiments/2026-10-16-MEMORY-03-references.md)에 있음.
 - 도움 수준: 안내형. 개념·명령·볼 항목을 먼저 설명한다.
 - 확인된 작업: CPU-01·02 관찰, CPU-03 구현·컴파일·프로필 404/200·앱 CPU 약 100·회복·추가 요청 429·전체 us 약 25/id 약 75·실측 요청 3.002366초를 기록. 학습자가 CPU 비율·사용자/커널 모드 관계를 설명했고 필요한 범위를 보완함.
 - 학습자가 실제 수행한 실습: 2026-10-15 `uname -s` → `Linux`, `pwd` → `/home/skl`, `ls` → 출력 없음, `ls -a` → `.`, `..`, `.bash_history`, `.bash_logout`, `.bashrc`, `.cache`, `.config`, `.lesshst`, `.profile`, `.ssh`, `.viminfo` (사용자 보고). `skl` 사용자로 생성했다고 설명함. 숨김 항목의 내용은 확인하지 않음. 과거 대화에서 언급된 다른 실습은 완료로 추정하지 않음.
-- 아직 확인하지 못한 점: 제한된 할당/보관 비교에서 Heap이 어떻게 변하는지와 GC 실제 시점, Heap·Metaspace 내부 동작과 G1 세부 구조, CPU lab 앱·top의 마지막 종료, CPU 부하 중 sy 수치와 장기 정상 범위. CPU 기록의 로컬 커밋 fee11dd를 확인했으며 당시 원격 추적 브랜치보다 1커밋 앞섰다. 푸시·Linux 최신 동기화는 미확인이다. Memory 기록은 이후 변경이다.
-- 최근 실험 기록: [MEMORY-03 — 개념 안내 진행 중](experiments/2026-10-16-MEMORY-03-references.md), [MEMORY-01·02 — 범위 읽기 완료](experiments/2026-10-16-MEMORY-01-os-memory.md), [CPU-03 — 관찰 완료](experiments/2026-10-15-CPU-03-compute.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-01](experiments/2026-10-15-CPU-01-process.md).
-- 다음 작은 행동: 새 transient endpoint와 관측 기록을 commit/push하고 Linux VM에서 pull한다. 이전 앱을 종료하고 새 버전을 컴파일·lab 프로필로 실행한 뒤 transient API를 한 번 호출해 보관 API와 비교한다.
+- 아직 확인하지 못한 점: 이번 GC 전후 감소량 중 transient 배열이 차지한 정확한 크기, Heap·Metaspace 내부 동작과 G1 세부 구조, CPU lab 앱·top의 마지막 종료, CPU 부하 중 sy 수치와 장기 정상 범위. CPU 기록의 로컬 커밋 fee11dd를 확인했으며 당시 원격 추적 브랜치보다 1커밋 앞섰다. 푸시·Linux 최신 동기화는 미확인이다. Memory 기록은 이후 변경이다.
+- 최근 실험 기록: [MEMORY-03 — 안내 실험 완료](experiments/2026-10-16-MEMORY-03-references.md), [MEMORY-01·02 — 범위 읽기 완료](experiments/2026-10-16-MEMORY-01-os-memory.md), [CPU-03 — 관찰 완료](experiments/2026-10-15-CPU-03-compute.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-01](experiments/2026-10-15-CPU-01-process.md).
+- 다음 작은 행동: MEMORY-03의 문서 변경을 검토하고 Git 커밋·푸시한 뒤 Linux VM에서 pull한다. 이후 MEMORY-04를 시작한다.
 
 ## 과정별 상태
 
