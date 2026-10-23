@@ -1,6 +1,6 @@
 # THREAD-02 — 시간을 기다리는 스레드
 
-상태: 완료 (관찰·자기 설명·마무리 퀴즈 완료, 앱·top 종료 사용자 확인, 기록 커밋·푸시 전)
+상태: 완료 (관찰·자기 설명·마무리 퀴즈·종료 확인, 기록 커밋 a766b39를 Mac의 main·origin/main에서 확인)
 
 ## 1. 질문과 실험 조건
 
@@ -133,8 +133,8 @@ grep --after-context=20 '"http-nio-8080-exec-5"' /tmp/thread-02-after-67745.txt
 - 확인된 복습: 프로세스와 스레드 ID, Sl, Acceptor/Poller/worker 역할, JVM과 OS 상태의 관점 차이.
 - 보충 설명: VIRT는 가상 주소 공간의 크기, RES는 현재 RAM 상주량, 명령의 출력 열 이름은 stat이다.
 - 학습자의 자기 설명: sleep 대기와 낮은 CPU를 연결하고, 같은 TID와 큐 대기 메서드로 worker 생존·재사용을 설명했다. grep의 긴 옵션과 주변 줄 출력 범위도 설명했다.
-- 다음 작은 행동: 관찰·퀴즈·종료 기록을 Mac에서 커밋·푸시하고 Linux에서 pull한다. 다음 THREAD-03 시작 전에는 THREAD-01·02 복습 퀴즈를 진행한다.
-- 저장 상태: 기존 API·기록 커밋 `2d97c81`은 Mac의 origin/main까지 반영됨. 이번 실제 관찰·퀴즈 답 갱신은 로컬 미커밋 상태다.
+- 후속 진행: 기록 커밋 a766b39를 Mac의 main·origin/main에서 확인했다. THREAD-01·02 복습과 THREAD-03 학습도 진행했다. 현재 다음 행동은 [진도 문서](../PROGRESS.md)를 따른다. 당시 Linux pull은 별도 미확인이다.
+- 저장 상태: API 커밋 `2d97c81`은 Mac의 origin/main까지 반영됨. 실제 관찰·퀴즈·종료 기록 커밋 `a766b39`를 Mac의 main·origin/main에서 확인했다. 이번 인계 상태 갱신은 로컬 미커밋 상태다.
 
 ## 10. 챕터 마무리 퀴즈
 
@@ -150,4 +150,4 @@ grep --after-context=20 '"http-nio-8080-exec-5"' /tmp/thread-02-after-67745.txt
 | 2 | 동일 TID 67779로 생존을 확인하고 LinkedBlockingQueue.take에서 다음 작업을 기다린다고 설명함. ps -L과 jcmd Thread.print로 양쪽에서 대조하는 방법도 제안함. | 맞음. 이번 요청 전후 실제 덤프에서 TID/nid 67779가 일치함. ps 교차 확인은 방법 제안이며 이번 PID에 대해 추가로 실행한 결과는 미제공. |
 | 3 | -B는 --before-context, -A는 --after-context이며 일치한 exec-5 줄 뒤 20줄을 출력하므로 exec-6까지 포함됐다고 설명함. | 맞음. |
 
-이 관찰·자기 설명·퀴즈 답변으로 THREAD-02 학습 완료 기준을 충족했다. 앱·top 종료는 사용자 보고로 확인했다. 이번 기록의 커밋·푸시는 별도 확인 대기로 남긴다.
+이 관찰·자기 설명·퀴즈 답변으로 THREAD-02 학습 완료 기준을 충족했다. 앱·top 종료는 사용자 보고로 확인했다. 관찰 기록 커밋 a766b39는 Mac의 main·origin/main에서 확인했다.
