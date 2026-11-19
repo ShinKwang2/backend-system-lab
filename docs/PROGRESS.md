@@ -4,7 +4,7 @@
 
 ## 지금 위치
 
-- 과정: F00·F01·F02·F03 입문 학습 완료. THREAD-03은 실제 반복 덤프·자기 설명·마무리 퀴즈 답변을 확인하고 명령 옵션과 해석을 보충했다. Linux 앱 종료는 사용자 보고로 확인했고 Git 정리는 대기 중이다. MEMORY-03 실험은 심화 H02 내용이지만 개념·제한 실험을 먼저 진행했다. 전체 순서는 [커리큘럼](CURRICULUM.md)을 따른다.
+- 과정: F00·F01·F02·F03 입문 학습 완료. THREAD-03은 실제 반복 덤프·자기 설명·마무리 퀴즈 답변을 확인하고 명령 옵션과 해석을 보충했다. Linux 앱 종료는 사용자 보고로 확인했고 THREAD-03·SCHEDULER-01 기록은 원격에 반영했다. Linux pull은 미확인이다. MEMORY-03 실험은 심화 H02 내용이지만 개념·제한 실험을 먼저 진행했다. 전체 순서는 [커리큘럼](CURRICULUM.md)을 따른다.
 - 현재 주제: [Scheduler 커리큘럼](../src/main/java/com/shinkwang/backendsystemlab/scheduler/README.md)의 SCHEDULER-01. 2026-11-19 nproc 4 사용자 보고와 vmstat 1 5 실행 화면을 확인했다. r은 1→0→0→0→0, us는 모두 0, id는 모두 100이었다. 기본 열 간격이 밀려 보인다는 질문에 -w/--wide를 안내한다. -w로 깔끔해졌다는 사용자 보고를 확인했다. 새 출력 수치는 미제공이다. 학습자는 기존 관측이 CPU 여유 상태라고 판단했고, 튜터가 r·id 근거를 보충한다. 마무리 퀴즈 답변·보충까지 확인하여 SCHEDULER-01을 완료했다. r에 실행 중 작업이 포함됨을 이해했고 CPU 사용률을 함께 보자고 제안했다. CPU 4개에서 r=8의 배치를 유추와 사실로 구분했으며, 번갈아 실행해도 지속적인 실행 대기가 생길 수 있음을 보충했다.
 - 최근 완료한 세부 실험: [THREAD-03](experiments/2026-10-19-THREAD-03-stack-reading.md). 2026-10-19 Linux top·JVM Poller 대조에 이어 2026-10-23 PID 88723의 exec-1/TID 88754 반복 덤프를 확인했다. 학습자는 경과 시간과 누적 CPU 시간, 순간 덤프의 한계, worker 큐 대기를 설명했고 반복 덤프의 cpu 증가량으로 CPU 사용을 확인하는 방법을 직접 제안했다. 요청→GC 인과관계는 미확인이다.
 - 앞서 완료한 MEMORY-03: 객체 참조 기초와 제한 실험. Linux lab 프로필 PID 55091에서 보관 배열 1→2→3→4개일 때 Heap `used`는 26346K→28721K→30846K→32971K. 5번째 POST는 HTTP 429, DELETE는 HTTP 200이었고 이후 `used`는 35708K였다. transient API가 포함된 lab 앱 PID 56469는 호출 전 `used` 24476K, transient 호출 뒤 31459K, `jcmd 56469 GC.run` 요청 뒤 17573K를 보였다. 학습자는 회수 대상과 실제 GC 실행을 구분하고 특정 배열의 회수 여부는 전체 Heap 수치만으로 확정할 수 없다고 설명했다. 2026-10-19 transient endpoint 응답 HTTP 200, `Temporary array bytes: 1048576`을 확인함. 자세한 절차와 관측값은 [MEMORY-03 기록](experiments/2026-10-16-MEMORY-03-references.md)에 있음.
@@ -16,7 +16,7 @@
 - 최근 실험 기록: [MEMORY-03 — 안내 실험 완료](experiments/2026-10-16-MEMORY-03-references.md), [MEMORY-01·02 — 범위 읽기 완료](experiments/2026-10-16-MEMORY-01-os-memory.md), [CPU-03 — 관찰 완료](experiments/2026-10-15-CPU-03-compute.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-01](experiments/2026-10-15-CPU-01-process.md).
 - THREAD-02 시작 복습: MEMORY-02·THREAD-01의 네 질문에 답함. Heap used/프로세스 메모리, PID/TID, Sl, Tomcat 스레드 역할을 설명했다. VIRT는 주소 자체가 아닌 크기, RES는 현재 RAM 상주량, 명령의 출력 열은 `stat`임을 보충했다. 답과 보충은 [THREAD-02 기록](experiments/2026-10-19-THREAD-02-timed-wait.md)에 구분해 저장했다.
 - Git 작업 분담: 2026-11-19 사용자가 커밋·푸시도 AI가 수행하도록 명시했다. 학습자는 Linux 실험과 관찰을 직접 수행한다.
-- Git 상태: THREAD-03 기록 커밋 `3409325`를 Mac에서 확인했다. SCHEDULER-01 시작 시 작업 트리는 깨끗했고 로컬 origin/main보다 1커밋 앞선 상태였다. 해당 커밋의 푸시·Linux pull은 미확인이다. 새 SCHEDULER-01 시작 기록·진도 갱신은 로컬 미커밋 상태다.
+- Git 상태: 2026-11-19 AI가 SCHEDULER-01 학습 기록 커밋 5f67530을 생성하고 `git push origin main` 성공을 확인했다(a766b39..5f67530). THREAD-03 커밋 3409325도 함께 원격에 반영되었다. 이 후속 Git 상태 정정은 별도 문서 커밋에 포함한다. Linux pull은 미확인이다.
 - THREAD-03 시작 복습: jcmd의 전체 이름·대괄호 ID 대조, RUNNABLE만으로 CPU 사용을 단정할 수 없음, 요청 후 큐 대기를 설명했다. 스레드 CPU 측정 도구 선택은 확신하지 못해 top -H(긴 옵션 --threads-show)와 덤프의 역할 차이를 보충했다. comm의 길이 제한과 열 폭의 차이, 시간 대기와 다음 작업 대기의 차이도 구체화했다. 답과 보충은 [THREAD-03 기록](experiments/2026-10-19-THREAD-03-stack-reading.md)에 저장했다.
 - 2026-10-23 재개: 출장 후 학습 위치와 덤프 출력 명령을 복습했다. 학습자는 앱을 꺼두었다고 설명했고, 재기동 후 Starting 로그에서 PID 88723·Java 21.0.12.1을, 다음 로그에서 lab 프로필을 확인했다. Started 로그와 HTTP 응답은 이번에 아직 미제공이다. 위 PID 69064·TID 69104는 2026-10-19 당시 값이다.
 - 재개 후 관찰: 안내한 덤프 저장·Poller 추출 절차에 이어 사용자가 Poller 블록을 제공했다. 앱 PID 88723의 Poller는 TID/nid 88764, Java RUNNABLE, 최상단 EPoll.wait였다. cpu=411.32ms·elapsed=5626.96s를 확인했다. 이번 실행의 Linux 상태·%CPU와 직접 대조한 것은 아니다.
@@ -28,7 +28,7 @@
 - 현재 단계: [SCHEDULER-01](experiments/2026-10-23-SCHEDULER-01-run-queue.md). 2026-10-24 THREAD-02·03 복습 답변 확인. 학습자는 sleep 대기와 낮은 CPU를 연결했고 elapsed·cpu 의미를 설명했다. Java 상태 이름 TIMED_WAITING (sleeping)을 보충했다. 시간·이벤트 대기와 CPU 실행 차례 대기, 스케줄러의 역할을 설명하고 nproc 재확인을 안내한다. 이번 Linux 관찰 출력은 아직 전이다.
 - 2026-11-17 재개: 학습자가 현재 위치·재개 절차·앞으로의 방향에 대한 상세 정리를 요청했다. 저장된 문서와 현재 Git 상태를 다시 확인했다. Mac HEAD는 여전히 3409325, 로컬 origin/main보다 1커밋 앞서 있고 SCHEDULER-01 문서 3개 변경은 미커밋 상태다. fetch는 하지 않았으므로 실제 원격의 최신 상태를 확인한 것은 아니다. 현재 Linux 접속·앱 실행·자원·도구 상태는 미확인이다. 10월의 PID·CPU 수를 현재 값으로 재사용하지 않는다.
 - 2026-11-19 관찰: nproc 4 사용자 보고에 이어 Linux `skl@backend-lab:~$`에서 vmstat 1 5의 헤더·5개 자료 행·자동 종료 후 프롬프트를 스크린샷으로 확인했다. 실행 중+CPU 실행 차례 대기 작업 수 r과 사용자 영역 CPU 비율 us·유휴 비율 id를 읽는다. 첫 CPU 보고서의 부팅 이후 평균과 이후 1초 구간, r의 순간 값을 구분한다. 상세 도구 버전과 현재 앱 상태는 미확인이다.
-- 다음 작은 행동: AI가 Mac 작업 공간의 변경 문서 4개(PROGRESS, THREAD-03 후속 상태 정정, experiments/README, SCHEDULER-01 새 기록)를 함께 커밋·푸시한다. 그다음 학습자가 Linux에서 pull한다. 이후 SCHEDULER-02 시작 시 직전 두 챕터 THREAD-03·SCHEDULER-01 핵심을 짧게 복습한다. 새 실험은 아직 설계·구현 전이다. THREAD-03 기록 푸시와 Linux pull은 별도 확인 대기로 유지한다. 현재 top 간격 설정 결과, Irix 모드, 인터럽트 보충 설명의 자기 설명·재현은 미확인이다.
+- 다음 작은 행동: 학습자가 Linux 프로젝트 폴더 `/home/skl/backend-system-lab`에서 git pull을 실행한다. 이후 SCHEDULER-02 시작 시 직전 두 챕터 THREAD-03·SCHEDULER-01 핵심을 짧게 복습한다. 새 부하 실험은 아직 설계·구현 전이다.
 
 ## 과정별 상태
 
@@ -39,7 +39,7 @@
 | F00 | 환경·터미널·기동 확인 | 완료 | Linux·프로젝트·Java 21·Gradle 9.7.1·앱 기동 확인 ([환경 E01](ENVIRONMENT.md), [기동 기록](experiments/2026-10-15-CPU-01-process.md)) |
 | F01 | CPU 입문 | 완료 | [CPU-01](experiments/2026-10-15-CPU-01-process.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-03](experiments/2026-10-15-CPU-03-compute.md). 실행 종료·기록 동기화는 별도 확인 대기 |
 | F02 | Memory 입문 | 완료 | [MEMORY-01·02](experiments/2026-10-16-MEMORY-01-os-memory.md). 심화 H02의 [MEMORY-03](experiments/2026-10-16-MEMORY-03-references.md)은 앞서 제한 실험함 |
-| F03 | Thread 입문 | 완료 | [THREAD-01](experiments/2026-10-19-THREAD-01-process-threads.md)·[THREAD-02](experiments/2026-10-19-THREAD-02-timed-wait.md)·[THREAD-03](experiments/2026-10-19-THREAD-03-stack-reading.md) 실제 관찰·자기 설명·퀴즈 확인 및 보충. PID 88723 앱 종료 사용자 확인, Git 정리 대기 |
+| F03 | Thread 입문 | 완료 | [THREAD-01](experiments/2026-10-19-THREAD-01-process-threads.md)·[THREAD-02](experiments/2026-10-19-THREAD-02-timed-wait.md)·[THREAD-03](experiments/2026-10-19-THREAD-03-stack-reading.md) 실제 관찰·자기 설명·퀴즈 확인 및 보충. PID 88723 앱 종료 사용자 확인, 기록 원격 반영·Linux pull 미확인 |
 | F04 | Load / Scheduler 입문 | 진행 중 | [SCHEDULER-01](experiments/2026-10-23-SCHEDULER-01-run-queue.md) SCHEDULER-01 정상 출력·해석·마무리 퀴즈 및 보충 완료. SCHEDULER-02·03은 계획 |
 | F05 | Disk I/O 입문 | 계획 | 없음 |
 | F06 | Network 입문 | 계획 | 없음 |

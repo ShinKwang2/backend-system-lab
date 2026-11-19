@@ -17,8 +17,8 @@
 | [MEMORY-03](2026-10-16-MEMORY-03-references.md) | 안내 실험 완료 | Java 객체 참조, 컬렉션 보관·해제, 일시 할당과 GC 요청 전후 관찰 |
 | [THREAD-01](2026-10-19-THREAD-01-process-threads.md) | 완료 | PID/TID, Linux와 JVM 스레드 목록 대조, Acceptor/Poller/worker, 마무리 퀴즈 |
 | [THREAD-02](2026-10-19-THREAD-02-timed-wait.md) | 완료 / 기록 a766b39 확인 | sleep HTTP 200·3.003086초, 낮은 CPU, 같은 worker의 TIMED_WAITING → WAITING 비교, 퀴즈 3문항·종료 확인 완료 |
-| [THREAD-03](2026-10-19-THREAD-03-stack-reading.md) | 학습 완료 / 앱 종료·기록 커밋 3409325 확인 | Poller 대조, 헤더 시간, 단일 sleep 요청의 두 덤프 관찰·자기 설명·마무리 퀴즈 확인. 푸시·Linux 동기화 미확인 |
-| [SCHEDULER-01](2026-10-23-SCHEDULER-01-run-queue.md) | 완료 / 기록 동기화 대기 | nproc 4·vmstat 정상 출력, r·CPU 비율 해석, -w 가독성 개선·마무리 퀴즈 답변 확인 |
+| [THREAD-03](2026-10-19-THREAD-03-stack-reading.md) | 학습 완료 / 앱 종료·기록 커밋 3409325 확인 | Poller 대조, 헤더 시간, 단일 sleep 요청의 두 덤프 관찰·자기 설명·마무리 퀴즈 확인. 푸시 확인·Linux 동기화 미확인 |
+| [SCHEDULER-01](2026-10-23-SCHEDULER-01-run-queue.md) | 완료 / 기록 푸시 확인·Linux pull 대기 | nproc 4·vmstat 정상 출력, r·CPU 비율 해석, -w 가독성 개선·마무리 퀴즈 답변 확인 |
 
 ## 기록 기준
 
