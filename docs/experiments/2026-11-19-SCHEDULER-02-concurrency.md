@@ -52,7 +52,7 @@
 
 ## 9. 배운 내용과 다음 행동
 
-- 다음 작은 행동: AI가 구현·기록을 커밋·푸시한다. 학습자는 Linux 프로젝트에서 git pull 후 lab 프로필로 앱을 기동하고 새 PID·프로필 로그를 제공한다. 아직 부하 요청은 보내지 않는다.
+- 다음 작은 행동: AI의 구현·기록 커밋 72ccda2와 origin/main 푸시를 확인했다. 학습자는 Linux 프로젝트에서 git pull 후 lab 프로필로 앱을 기동하고 새 PID·프로필 로그를 제공한다. 아직 부하 요청은 보내지 않는다.
 - 저장 상태: 이 시작 기록은 로컬 미커밋 상태다. 사용자는 AI의 커밋·푸시 수행을 명시했다. Linux 명령 실행과 관찰은 학습자가 수행한다.
 
 
@@ -222,3 +222,5 @@ AI는 응답 record의 elapseMillis 오타를 elapsedMillis로 수정했다. Cpu
 Mac에서 ./gradlew compileJava를 실행했다. 처음 제한된 실행에서 ~/.gradle 캐시 lock 생성 권한 오류가 났고, 승인된 권한으로 다시 실행하여 3초에 성공했다. 응답 필드명 정정 후 다시 실행하여 BUILD SUCCESSFUL in 906ms, 1 actionable task: 1 executed를 확인했다. CPU 부하를 Mac에서 실행하지 않았으며 실제 실험은 별도 Linux에서 학습자가 수행한다. 테스트·실제 HTTP 결과를 확인한 것은 아니다.
 
 다음 안내: Linux 앱 실행 터미널에서 cd /home/skl/backend-system-lab → git pull → ./gradlew bootRun --args='--spring.profiles.active=lab'. pull 후 기동 로그의 새 PID와 lab 프로필을 확인한다. 앱 터미널 유지, 종료 Ctrl+C. Linux pull·기동·새 PID는 아직 미확인이다. 이후 별도 터미널에서 관측 준비·예상·첫 단일 worker 요청을 진행할 예정이다.
+
+Git 후속 확인: 2026-11-20 구현·학습 기록 커밋 72ccda2를 생성하고 origin/main 정상 푸시를 확인했다. 첫 자동 승인 거절 후 사용자 명시 지시와 실제 지침을 재확인하여 동일 작업 재검토로 성공했다. Linux pull은 미확인이다. 이 Git 상태 갱신은 별도 문서 커밋에 포함한다.

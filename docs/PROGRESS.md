@@ -16,7 +16,7 @@
 - 최근 실험 기록: [MEMORY-03 — 안내 실험 완료](experiments/2026-10-16-MEMORY-03-references.md), [MEMORY-01·02 — 범위 읽기 완료](experiments/2026-10-16-MEMORY-01-os-memory.md), [CPU-03 — 관찰 완료](experiments/2026-10-15-CPU-03-compute.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-01](experiments/2026-10-15-CPU-01-process.md).
 - THREAD-02 시작 복습: MEMORY-02·THREAD-01의 네 질문에 답함. Heap used/프로세스 메모리, PID/TID, Sl, Tomcat 스레드 역할을 설명했다. VIRT는 주소 자체가 아닌 크기, RES는 현재 RAM 상주량, 명령의 출력 열은 `stat`임을 보충했다. 답과 보충은 [THREAD-02 기록](experiments/2026-10-19-THREAD-02-timed-wait.md)에 구분해 저장했다.
 - Git 작업 분담: 2026-11-19 사용자가 커밋·푸시도 AI가 수행하도록 명시했다. 학습자는 Linux 실험과 관찰을 직접 수행한다.
-- Git 상태: 2026-11-19 AI가 SCHEDULER-01 학습 기록 커밋 5f67530을 생성하고 `git push origin main` 성공을 확인했다(a766b39..5f67530). THREAD-03 커밋 3409325도 함께 원격에 반영되었다. 이 후속 Git 상태 정정은 별도 문서 커밋에 포함한다. Linux pull은 미확인이다.
+- Git 상태: 2026-11-20 구현·학습 기록 커밋 72ccda2를 만들고 origin/main 푸시 성공을 확인했다(9a5c3b9..72ccda2). 첫 푸시는 자동 승인 검토에서 승인 근거 부족·지침상 금지라는 사유로 거절됐으나, 실제 AGENTS.md에 해당 금지가 없고 사용자가 AI 푸시를 명시한 근거를 확인해 동일 명령 재검토 후 승인·성공했다. 이번 후속 상태 정정은 별도 문서 커밋에 포함한다. Linux pull은 미확인이다.
 - THREAD-03 시작 복습: jcmd의 전체 이름·대괄호 ID 대조, RUNNABLE만으로 CPU 사용을 단정할 수 없음, 요청 후 큐 대기를 설명했다. 스레드 CPU 측정 도구 선택은 확신하지 못해 top -H(긴 옵션 --threads-show)와 덤프의 역할 차이를 보충했다. comm의 길이 제한과 열 폭의 차이, 시간 대기와 다음 작업 대기의 차이도 구체화했다. 답과 보충은 [THREAD-03 기록](experiments/2026-10-19-THREAD-03-stack-reading.md)에 저장했다.
 - 2026-10-23 재개: 출장 후 학습 위치와 덤프 출력 명령을 복습했다. 학습자는 앱을 꺼두었다고 설명했고, 재기동 후 Starting 로그에서 PID 88723·Java 21.0.12.1을, 다음 로그에서 lab 프로필을 확인했다. Started 로그와 HTTP 응답은 이번에 아직 미제공이다. 위 PID 69064·TID 69104는 2026-10-19 당시 값이다.
 - 재개 후 관찰: 안내한 덤프 저장·Poller 추출 절차에 이어 사용자가 Poller 블록을 제공했다. 앱 PID 88723의 Poller는 TID/nid 88764, Java RUNNABLE, 최상단 EPoll.wait였다. cpu=411.32ms·elapsed=5626.96s를 확인했다. 이번 실행의 Linux 상태·%CPU와 직접 대조한 것은 아니다.
@@ -28,7 +28,7 @@
 - 현재 단계: [SCHEDULER-01](experiments/2026-10-23-SCHEDULER-01-run-queue.md). 2026-10-24 THREAD-02·03 복습 답변 확인. 학습자는 sleep 대기와 낮은 CPU를 연결했고 elapsed·cpu 의미를 설명했다. Java 상태 이름 TIMED_WAITING (sleeping)을 보충했다. 시간·이벤트 대기와 CPU 실행 차례 대기, 스케줄러의 역할을 설명하고 nproc 재확인을 안내한다. 이번 Linux 관찰 출력은 아직 전이다.
 - 2026-11-17 재개: 학습자가 현재 위치·재개 절차·앞으로의 방향에 대한 상세 정리를 요청했다. 저장된 문서와 현재 Git 상태를 다시 확인했다. Mac HEAD는 여전히 3409325, 로컬 origin/main보다 1커밋 앞서 있고 SCHEDULER-01 문서 3개 변경은 미커밋 상태다. fetch는 하지 않았으므로 실제 원격의 최신 상태를 확인한 것은 아니다. 현재 Linux 접속·앱 실행·자원·도구 상태는 미확인이다. 10월의 PID·CPU 수를 현재 값으로 재사용하지 않는다.
 - 2026-11-19 관찰: nproc 4 사용자 보고에 이어 Linux `skl@backend-lab:~$`에서 vmstat 1 5의 헤더·5개 자료 행·자동 종료 후 프롬프트를 스크린샷으로 확인했다. 실행 중+CPU 실행 차례 대기 작업 수 r과 사용자 영역 CPU 비율 us·유휴 비율 id를 읽는다. 첫 CPU 보고서의 부팅 이후 평균과 이후 1초 구간, r의 순간 값을 구분한다. 상세 도구 버전과 현재 앱 상태는 미확인이다.
-- 현재 주제·다음 작은 행동: [SCHEDULER-02](experiments/2026-11-19-SCHEDULER-02-concurrency.md). 2026-11-20 학습자 전체 코드 작성·defaultValue 문자열 정정을 실제 확인했다. AI가 응답 필드명 elapsedMillis를 교정하고 전체 안전 제한·정리 흐름을 검토했다. Mac compileJava 최종 906ms 성공. AI가 코드·기록을 커밋·푸시한 뒤, 학습자는 Linux에서 git pull 후 lab 앱을 기동하고 새 PID·프로필 로그를 제공한다. Linux 실험·새 PID·응답·관찰 결과는 아직 미확인이다.
+- 현재 주제·다음 작은 행동: [SCHEDULER-02](experiments/2026-11-19-SCHEDULER-02-concurrency.md). 2026-11-20 학습자 전체 코드 작성·defaultValue 문자열 정정을 실제 확인했다. AI가 응답 필드명 elapsedMillis를 교정하고 전체 안전 제한·정리 흐름을 검토했다. Mac compileJava 최종 906ms 성공. 구현·기록 커밋 72ccda2를 origin/main에 푸시했다. 다음은 학습자가 Linux에서 git pull 후 lab 앱을 기동하고 새 PID·프로필 로그를 제공한다. Linux 실험·새 PID·응답·관찰 결과는 아직 미확인이다.
 
 ## 과정별 상태
 
