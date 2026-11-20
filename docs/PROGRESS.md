@@ -40,7 +40,7 @@
 | F01 | CPU 입문 | 완료 | [CPU-01](experiments/2026-10-15-CPU-01-process.md), [CPU-02](experiments/2026-10-15-CPU-02-baseline.md), [CPU-03](experiments/2026-10-15-CPU-03-compute.md). 실행 종료·기록 동기화는 별도 확인 대기 |
 | F02 | Memory 입문 | 완료 | [MEMORY-01·02](experiments/2026-10-16-MEMORY-01-os-memory.md). 심화 H02의 [MEMORY-03](experiments/2026-10-16-MEMORY-03-references.md)은 앞서 제한 실험함 |
 | F03 | Thread 입문 | 완료 | [THREAD-01](experiments/2026-10-19-THREAD-01-process-threads.md)·[THREAD-02](experiments/2026-10-19-THREAD-02-timed-wait.md)·[THREAD-03](experiments/2026-10-19-THREAD-03-stack-reading.md) 실제 관찰·자기 설명·퀴즈 확인 및 보충. PID 88723 앱 종료 사용자 확인, 기록 원격 반영·Linux pull 미확인 |
-| F04 | Load / Scheduler 입문 | 진행 중 | [SCHEDULER-01](experiments/2026-10-23-SCHEDULER-01-run-queue.md) SCHEDULER-01 정상 출력·해석·마무리 퀴즈 및 보충 완료. [SCHEDULER-02](experiments/2026-11-19-SCHEDULER-02-concurrency.md) 실험 관찰·제한 검증·마무리 퀴즈 및 보충 완료, SCHEDULER-03 정상 관찰·마무리 복습 완료 |
+| F04 | Load / Scheduler 입문 | 진행 중 | [SCHEDULER-01](experiments/2026-10-23-SCHEDULER-01-run-queue.md) SCHEDULER-01 정상 출력·해석·마무리 퀴즈 및 보충 완료. [SCHEDULER-02](experiments/2026-11-19-SCHEDULER-02-concurrency.md) 실험 관찰·제한 검증·마무리 퀴즈 및 보충 완료, SCHEDULER-03 정상 관찰·마무리 복습 완료. 2026-11-20 F05 시작 복습에서 wa=0의 해석과 uptime의 1/5/15분 구간, SCHEDULER-02의 worker 4→8 비교(us 100% 유지·worker당 iterations 약 절반)를 확인했다. F05 DISK-01 질문 단계. |
 | F05 | Disk I/O 입문 | 계획 | 없음 |
 | F06 | Network 입문 | 계획 | 없음 |
 | H01 | CPU 스레드 추적 | 계획 | 없음 |
@@ -85,6 +85,6 @@
 
 
 
-- SCHEDULER-03 완료 — [실험 기록](experiments/2026-11-20-SCHEDULER-03-load.md). 정상 상태 vmstat·ps·uptime 관찰과 마무리 복습을 완료했다. 학습자는 r/b/wa와 1·5·15분 load 평균을 설명했다. wa=0%는 I/O 대기와 연관되어 유휴로 집계된 CPU 시간 비율이며 프로세스의 전체 I/O 대기율이 아님을 보충했다. 높은 load 상황과 원인 검증은 미수행이다. 다음 과정 F05 Disk I/O 입문. 주제가 바뀌므로 다음에는 새 세션을 열도록 안내하고 아래 프롬프트를 사용한다.
+- SCHEDULER-03 완료 — [실험 기록](experiments/2026-11-20-SCHEDULER-03-load.md). 정상 상태 vmstat·ps·uptime 관찰과 마무리 복습을 완료했다. 학습자는 r/b/wa와 1·5·15분 load 평균을 설명했다. wa=0%는 I/O 대기와 연관되어 유휴로 집계된 CPU 시간 비율이며 프로세스의 전체 I/O 대기율이 아님을 보충했다. 높은 load 상황과 원인 검증은 미수행이다. 다음 과정 F05 Disk I/O 입문. 이번에는 같은 대화에서 이어가기로 사용자가 선택했다. 주제가 바뀔 때 새 세션을 안내하는 선호는 유지한다.
 
 > AGENTS.md, README.md, docs/PROGRESS.md, docs/ENVIRONMENT.md, docs/CURRICULUM.md와 현재 주제 README를 읽고 F05 Disk I/O 입문을 시작하자. 이전 주제 복습부터 한국어로 진행하고, 오늘의 질문과 다음 작은 단계 하나를 안내해줘. Linux 명령은 실행 위치, 입력 방법, 옵션과 인자, 출력 항목·단위, 종료 방법을 먼저 자세히 설명해줘.
