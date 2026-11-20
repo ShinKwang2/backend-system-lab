@@ -27,7 +27,6 @@ public class CpuLabController {
             return Long.toString(calculateForThreeSeconds());
         } finally {
             running.set(false);
-
         }
     }
 
