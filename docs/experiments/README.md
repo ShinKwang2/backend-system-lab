@@ -28,3 +28,5 @@
 파일을 저장한 것과 GitHub에 반영한 것은 다르다. 최신 커밋·푸시·Linux 동기화 여부는 [진도 문서](../PROGRESS.md)의 Git 상태에서 확인한다.
 
 | [SCHEDULER-03](2026-11-20-SCHEDULER-03-load.md) | 진행 중 | vmstat·ps·uptime 정상 상태와 load average 관찰, 높은 load 원인 가설은 미검증 |
+
+| [SCHEDULER-03](2026-11-20-SCHEDULER-03-load.md) | 정상 관찰·개념 복습 완료 | vmstat·ps·uptime, load average와 r/b/wa 기초 |
