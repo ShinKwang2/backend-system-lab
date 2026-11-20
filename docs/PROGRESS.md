@@ -83,3 +83,6 @@
 
 
 - SCHEDULER-03 정상 상태 관찰 — 2026-11-20: Linux root@backend-lab:/tmp에서 사용자가 vmstat -w 1 5를 실행해 5개 보고서를 제공했다. 이후 구간은 r=0,0,0,0,1, b=0, us=0~1%, sy=0~1%, id=99%, wa=0%였다. 첫 행은 부팅 이후 평균을 포함할 수 있어 이후 구간과 구분했다. 이어 ps -eo state,pid,comm | head -n 15를 실행해 PID 1~17 일부를 확인했고 상태는 S 또는 I였으며 D 상태는 표본에 없었다. 이 짧은 표본에서 D가 보이지 않았다는 뜻이며 순간적인 D 상태가 전혀 없었음을 증명하지는 않는다. 학습자는 낮은 CPU 사용률과 높은 load의 가능한 원인으로 파일 I/O와 네트워크 I/O를 제안했다. 디스크·블록 장치 대기는 D 상태가 될 수 있고 일반 소켓 응답 대기는 통상 D 상태가 아니라고 설명했다. 다음 작은 행동은 load average와 r·b의 관계를 확인하는 것이다. SCHEDULER-03 진행 중.
+
+
+- SCHEDULER-03 정상 상태 관찰 — [실험 기록](experiments/2026-11-20-SCHEDULER-03-load.md). 2026-11-20 Linux root@backend-lab:/tmp에서 vmstat -w 1 5 출력 5개, ps -eo state,pid,comm | head -n 15 표본, uptime 출력을 사용자에게 받아 기록했다. 이후 vmstat 구간의 b=0·wa=0%·id=99%, ps 표본에 D 없음, uptime load average 0.06·0.10·0.09를 확인했다. 높은 load 상황은 관찰하지 않았고 원인은 미검증이다. 다음은 load average와 r/b 관계 학습이다.
